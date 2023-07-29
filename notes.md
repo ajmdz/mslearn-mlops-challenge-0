@@ -23,3 +23,16 @@ on:
 > Triggering a workflow by pushing directly to the repo is not considered a best practice. Preferably, you’ll want to review any changes before you build them with GitHub Actions.
 
 > By default, branch protection rules do not apply to administrators. If you’re the administrator of the repo you’re working with, you’ll still be allowed to push directly to the repo.
+
+> To configure the code checks to be required before merging a pull request, your job needs to have a name in the GitHub Actions workflow. You can then find the checks by searching for the job names.
+
+
+Steps to automate checks for new pull requests:
+1. Add linters and unit test jobs to the workflow that is triggered by new pull requests
+2. Settings > Branches > add branch protection rules for `main`:
+    * Require a pull request before merging
+        * Require approvals
+    * Require status checks to pass before merging
+        * Require branches to be up to date before merging
+        * *add status checks from GitHub Actions*
+3. Save changes
