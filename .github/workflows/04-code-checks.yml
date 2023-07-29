@@ -1,7 +1,7 @@
 name: Code checks
 
 on:
-  workflow_dispatch:
+  pull_request:
 
 jobs:
   linting:
@@ -31,7 +31,7 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: '3.8'
-    - name: Install pytest
+    - name: Install requirements.txt
       run: |
         python -m pip install -r requirements.txt
     - name: Run tests with pytest
