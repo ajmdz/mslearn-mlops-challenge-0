@@ -1,0 +1,40 @@
+# Create the endpoint and deploy to the endpoint
+name: Manually deploy model to endpoint
+
+on:
+  workflow_dispatch:
+
+jobs:
+  create-endpoint:
+    name: Create endpoint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Create managed online endpoint
+      run: |
+        az ml online-endpoint create --name diabetes-mlflow -f ./create-endpoint.yml
+
+  deploy-model:
+    name: Create endpoint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@main
+    - name: Install az ml extension
+      run: az extension add -n ml -y
+    - name: Azure login
+      uses: azure/login@v1
+      with:
+        creds: ${{secrets.AZURE_CREDENTIALS}}
+    - name: Deploy model to endpoint
+      run: |
+        az ml online-deployment create --name mlflow-deployment --endpoint mlflow-endpoint -f ./mlflow-deployment.yaml --all-traffic
+
+    
